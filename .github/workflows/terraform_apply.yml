@@ -1,0 +1,27 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Terraform Apply on Main
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Init
+      run: terraform init ./terraform
+
+    - name: Terraform Apply
+      env:
+        OCI_USER: ${{ secrets.OCI_USER }}
+        OCI_KEY: ${{ secrets.OCI_KEY }}
+      run: terraform apply -auto-approve ./terraform

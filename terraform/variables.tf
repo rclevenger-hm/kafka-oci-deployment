@@ -1,0 +1,11 @@
+variable "tenancy_ocid" {}
+variable "user_ocid" {}
+variable "fingerprint" {}
+variable "private_key_path" {}
+variable "region" {}
+variable "compartment_id" {}
+variable "availability_domain" {}
+variable "kafka_image_id" {}
+variable "zookeeper_image_id" {}
+variable "kafka_manager_image_id" {}
+variable "schema_registry_image_id" {}

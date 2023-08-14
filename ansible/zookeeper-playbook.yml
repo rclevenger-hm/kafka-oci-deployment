@@ -1,0 +1,5 @@
+- name: Deploy Zookeeper
+  hosts: zookeeper
+  become: yes
+  roles:
+    - zookeeper

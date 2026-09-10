@@ -25,8 +25,7 @@ resource "oci_core_network_security_group" "kafka_nodes" {
 }
 
 resource "oci_core_network_security_group_security_rule" "client_ingress" {
-  for_each = var.allowed_client_cidrs
-
+  for_each                  = var.allowed_client_cidrs
   network_security_group_id = oci_core_network_security_group.kafka_nodes.id
   direction                 = "INGRESS"
   protocol                  = "6"

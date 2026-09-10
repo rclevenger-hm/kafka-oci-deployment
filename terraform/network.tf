@@ -4,9 +4,9 @@ locals {
 
 resource "oci_core_vcn" "kafka" {
   compartment_id = var.compartment_id
-  cidr_blocks     = [var.vcn_cidr]
-  display_name    = "${var.name_prefix}-vcn"
-  dns_label       = local.dns_prefix
+  cidr_blocks    = [var.vcn_cidr]
+  display_name   = "${var.name_prefix}-vcn"
+  dns_label      = local.dns_prefix
 }
 
 resource "oci_core_subnet" "kafka_private" {

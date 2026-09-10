@@ -23,7 +23,7 @@ jobs:
         with:
           terraform_version: "1.16.2"
       - name: Check formatting
-        run: terraform -chdir=terraform fmt -check -recursive
+        run: terraform -chdir=terraform fmt -check -diff -recursive
       - name: Initialize providers without a backend
         run: terraform -chdir=terraform init -backend=false -input=false
       - name: Validate configuration

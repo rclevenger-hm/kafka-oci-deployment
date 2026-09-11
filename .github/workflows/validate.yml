@@ -1,4 +1,4 @@
-name: Validate architecture docs
+name: Validate architecture and Terraform
 
 on:
   pull_request:
@@ -9,7 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  validate-docs:
+    name: Documentation integrity
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,3 +19,21 @@ jobs:
           node-version: 22
       - name: Validate documentation integrity
         run: node scripts/validate-docs.mjs
+
+  validate-terraform:
+    name: Terraform foundation
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive
+      - name: Initialize providers without backend state
+        run: terraform init -backend=false -input=false
+      - name: Validate Terraform configuration
+        run: terraform validate -no-color

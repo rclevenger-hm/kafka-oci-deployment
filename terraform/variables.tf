@@ -23,18 +23,38 @@ variable "vcn_cidr" {
   description = "CIDR for the private Kafka VCN."
   type        = string
   default     = "10.42.0.0/16"
+
+  validation {
+    condition     = can(cidrhost(var.vcn_cidr, 0))
+    error_message = "vcn_cidr must be a valid CIDR block."
+  }
 }
 
 variable "kafka_subnet_cidr" {
   description = "CIDR for the private Kafka node subnet."
   type        = string
   default     = "10.42.10.0/24"
+
+  validation {
+    condition     = can(cidrhost(var.kafka_subnet_cidr, 0))
+    error_message = "kafka_subnet_cidr must be a valid CIDR block."
+  }
 }
 
 variable "allowed_client_cidrs" {
   description = "CIDRs permitted to reach the Kafka client listener. Keep this list narrowly scoped."
   type        = set(string)
   default     = []
+
+  validation {
+    condition     = alltrue([for cidr in var.allowed_client_cidrs : can(cidrhost(cidr, 0))])
+    error_message = "allowed_client_cidrs must contain only valid CIDR blocks."
+  }
+
+  validation {
+    condition     = alltrue([for cidr in var.allowed_client_cidrs : !contains(["0.0.0.0/0", "::/0"], cidr)])
+    error_message = "allowed_client_cidrs must not expose the Kafka listener to the entire internet."
+  }
 }
 
 variable "kafka_client_port" {

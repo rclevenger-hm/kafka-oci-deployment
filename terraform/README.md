@@ -11,6 +11,7 @@ It does not provision compute instances, Kafka binaries, KRaft voters, storage v
 - The NSG exposes only `kafka_client_port` for configured client CIDRs. Controller/inter-broker rules are deliberately deferred until the node-role topology is implemented.
 - No Internet Gateway, NAT Gateway, Service Gateway, or default route is created here. The egress NSG rule does not itself create external reachability; routing remains an explicit later decision.
 - Provider and Terraform versions are pinned/bounded in source rather than relying on an operator workstation default.
+- VCN, subnet, and NSG resources receive stable `managed-by=terraform` and `portfolio-project=<name_prefix>` freeform tags. Operators can add environment, owner, cost-center, or other tenancy-specific values through `freeform_tags` without removing those ownership markers.
 
 ## Example plan
 
@@ -24,6 +25,11 @@ name_prefix    = "kafka-lab"
 allowed_client_cidrs = [
   "10.20.0.0/24",
 ]
+
+freeform_tags = {
+  environment = "lab"
+  owner       = "platform"
+}
 ```
 
 Then inspect formatting and the dependency graph before any apply:
@@ -35,7 +41,7 @@ terraform validate
 terraform plan
 ```
 
-Do not apply this example unchanged to a production tenancy. CIDRs, connectivity, routing, DNS, authentication, availability-domain placement, and access paths must be designed for the target environment.
+Do not apply this example unchanged to a production tenancy. CIDRs, connectivity, routing, DNS, authentication, availability-domain placement, access paths, and organizational tagging standards must be designed for the target environment.
 
 ## Next infrastructure slice
 

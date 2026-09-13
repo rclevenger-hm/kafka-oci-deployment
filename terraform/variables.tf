@@ -19,6 +19,12 @@ variable "name_prefix" {
   }
 }
 
+variable "freeform_tags" {
+  description = "Additional OCI freeform tags applied to the Kafka network foundation. Stable ownership tags are added automatically."
+  type        = map(string)
+  default     = {}
+}
+
 variable "vcn_cidr" {
   description = "CIDR for the private Kafka VCN."
   type        = string

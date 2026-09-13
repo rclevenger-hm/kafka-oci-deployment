@@ -1,5 +1,9 @@
 locals {
   dns_prefix = substr(replace(var.name_prefix, "-", ""), 0, 12)
+  network_tags = merge(var.freeform_tags, {
+    "managed-by"        = "terraform"
+    "portfolio-project" = var.name_prefix
+  })
 }
 
 resource "oci_core_vcn" "kafka" {
@@ -7,6 +11,7 @@ resource "oci_core_vcn" "kafka" {
   cidr_blocks    = [var.vcn_cidr]
   display_name   = "${var.name_prefix}-vcn"
   dns_label      = local.dns_prefix
+  freeform_tags  = local.network_tags
 }
 
 resource "oci_core_subnet" "kafka_private" {
@@ -16,12 +21,14 @@ resource "oci_core_subnet" "kafka_private" {
   display_name               = "${var.name_prefix}-private"
   dns_label                  = "nodes"
   prohibit_public_ip_on_vnic = true
+  freeform_tags              = local.network_tags
 }
 
 resource "oci_core_network_security_group" "kafka_nodes" {
   compartment_id = var.compartment_id
   vcn_id         = oci_core_vcn.kafka.id
   display_name   = "${var.name_prefix}-nodes"
+  freeform_tags  = local.network_tags
 }
 
 resource "oci_core_network_security_group_security_rule" "client_ingress" {

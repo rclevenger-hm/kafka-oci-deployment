@@ -1,11 +1,21 @@
 variable "region" {
   description = "OCI region where the Kafka network foundation is created."
   type        = string
+
+  validation {
+    condition     = trimspace(var.region) != "" && can(regex("^[a-z0-9]+(?:-[a-z0-9]+)+-[0-9]+$", trimspace(var.region)))
+    error_message = "region must be a non-empty OCI region identifier such as us-ashburn-1."
+  }
 }
 
 variable "compartment_id" {
   description = "OCID of the compartment that will own the network resources."
   type        = string
+
+  validation {
+    condition     = can(regex("^ocid1\\.compartment\\.[A-Za-z0-9._-]+$", trimspace(var.compartment_id)))
+    error_message = "compartment_id must be an OCI compartment OCID."
+  }
 }
 
 variable "name_prefix" {

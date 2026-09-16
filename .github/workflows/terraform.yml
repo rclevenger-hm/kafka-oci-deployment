@@ -28,3 +28,5 @@ jobs:
         run: terraform -chdir=terraform init -backend=false -input=false
       - name: Validate configuration
         run: terraform -chdir=terraform validate
+      - name: Test network safety contract
+        run: terraform -chdir=terraform test

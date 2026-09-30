@@ -6,5 +6,6 @@ These documents support the reference architecture in the repository root. They 
 - [`failure-exercises.md`](failure-exercises.md) — controlled lab drills with preconditions, expected signals, recovery criteria, evidence capture, and a production-readiness scorecard.
 - [`capacity-planning.md`](capacity-planning.md) — workload, retention, replication, broker-loss headroom, recovery-throughput, and release-evidence worksheet for turning architecture assumptions into measurable budgets.
 - [`rolling-upgrade-runbook.md`](rolling-upgrade-runbook.md) — controller-aware, broker-by-broker upgrade procedure with health gates, rollback criteria, and evidence capture.
+- [`KRAFT_COMPUTE_FOUNDATION.md`](KRAFT_COMPUTE_FOUNDATION.md) — reviewed topology, placement, bootstrap, network, and acceptance criteria for the first executable three-node KRaft compute slice.
 
 As executable Terraform and provisioning are added, these documents should link to validated health-check, smoke-test, load-test, and failure-injection commands rather than duplicating command snippets that can drift from implementation.
